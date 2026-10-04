@@ -1,0 +1,9 @@
+# System packages (apt):
+#   chafa              - ASCII rendering engine
+#   mpv                - video playback (optional)
+#   python3-gi         - GTK bindings
+#   python3-gi-cairo   - cairo integration
+#   gir1.2-vte-2.91    - embedded terminal widget
+#   python3-pil        - image reading for aspect detection
+#
+# No pip packages required.
