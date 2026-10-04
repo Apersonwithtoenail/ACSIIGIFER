@@ -37,3 +37,11 @@ Play GIFs as colored ASCII art inside a real GTK window.
 ## License
 
 MIT
+
+## Platform status
+
+| Platform | Status |
+|---|---|
+| Linux (Debian/Ubuntu/Kali) | ✅ Tested |
+| macOS | ⚠️ Untested — installer written, needs verification |
+| Windows | ⚠️ Requires WSL2 (VTE doesn't work natively) |
