@@ -1,5 +1,10 @@
 # asciigif
 
+Play GIFs and videos as colored ASCII art inside a real GTK window.
+
+Works on Linux (native), macOS (Homebrew), and Windows (via WSL2).
+
+
 Play GIFs as colored ASCII art inside a real GTK window.
 
 ## Install
