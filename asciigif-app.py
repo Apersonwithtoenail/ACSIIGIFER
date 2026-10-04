@@ -13,15 +13,13 @@ import platform
 IS_MAC = platform.system() == "Darwin"
 IS_WINDOWS = platform.system() == "Windows"
 
-# Font per OS
 if IS_MAC:
     MONO_FONT = "Menlo"
 elif IS_WINDOWS:
     MONO_FONT = "Consolas"
 else:
-    MONO_FONT = MONO_FONT
+    MONO_FONT = "DejaVu Sans Mono"
 
-# Default media folder per OS
 if IS_MAC or IS_WINDOWS:
     _default_dir = os.path.expanduser("~/Pictures/gifs")
 else:
