@@ -8,9 +8,28 @@ from gi.repository import Gtk, Gdk, GLib, Vte, Pango
 
 import os, glob, random, configparser, signal
 
+import platform
+
+IS_MAC = platform.system() == "Darwin"
+IS_WINDOWS = platform.system() == "Windows"
+
+# Font per OS
+if IS_MAC:
+    MONO_FONT = "Menlo"
+elif IS_WINDOWS:
+    MONO_FONT = "Consolas"
+else:
+    MONO_FONT = MONO_FONT
+
+# Default media folder per OS
+if IS_MAC or IS_WINDOWS:
+    _default_dir = os.path.expanduser("~/Pictures/gifs")
+else:
+    _default_dir = os.path.expanduser("~/Videos/GIF")
+
 APP = "asciigif"
 VER = "5.3"
-GIF_DIR = os.environ.get("ASCIIGIF_DIR", os.path.expanduser("~/Videos/GIF"))
+GIF_DIR = os.environ.get("ASCIIGIF_DIR", _default_dir)
 CONF = os.path.expanduser("~/.config/asciigif.conf")
 
 SYMBOLS = ["all", "block", "braille", "ascii", "space", "technical", "geometric"]
