@@ -1,52 +1,44 @@
-#!/bin/bash
+#!/usr/bin/env bash
+# install.sh — install ACSIIGIFER and its desktop integration
 set -e
-echo "asciigif installer"
-echo "==================="
 
-if [ ! -f /etc/debian_version ]; then
-    echo "Only Debian / Ubuntu / Kali supported for auto-install."
-    echo "Manual deps: chafa mpv python3-gi gir1.2-vte-2.91 python3-pil"
-    exit 1
-fi
+APP_NAME="ACSIIGIFER"
+APP_ID="asciigifer"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-echo "→ Installing dependencies..."
-sudo apt update
-sudo apt install -y chafa mpv python3-gi python3-gi-cairo \
-                    gir1.2-vte-2.91 python3-pil
+BIN_DIR="$HOME/.local/bin"
+ICON_DIR="$HOME/.local/share/icons/hicolor/scalable/apps"
+DESKTOP_DIR="$HOME/.local/share/applications"
 
-echo "→ Copying files..."
-INSTALL_DIR="$HOME/.local/share/asciigif"
-mkdir -p "$INSTALL_DIR"
-cp asciigif-app.py "$INSTALL_DIR/"
-cp asciigif.sh     "$INSTALL_DIR/" 2>/dev/null || true
-chmod +x "$INSTALL_DIR/asciigif-app.py"
+mkdir -p "$BIN_DIR" "$ICON_DIR" "$DESKTOP_DIR"
 
-echo "→ Creating launcher..."
-mkdir -p "$HOME/.local/bin"
-cat > "$HOME/.local/bin/asciigif" << 'WRAP'
-#!/bin/bash
-exec python3 "$HOME/.local/share/asciigif/asciigif-app.py" "$@"
-WRAP
-chmod +x "$HOME/.local/bin/asciigif"
+# 1. symlink the launcher
+ln -sf "$SCRIPT_DIR/asciigif-app.py" "$BIN_DIR/asciigifer"
+chmod +x "$SCRIPT_DIR/asciigif-app.py"
 
-echo "→ Creating desktop entry..."
-mkdir -p "$HOME/.local/share/applications"
-cat > "$HOME/.local/share/applications/asciigif.desktop" << 'DESK'
+# 2. icon
+cp "$SCRIPT_DIR/assets/icon.svg" "$ICON_DIR/$APP_ID.svg"
+
+# 3. .desktop
+cat > "$DESKTOP_DIR/$APP_ID.desktop" <<DESKTOP
 [Desktop Entry]
 Type=Application
-Name=asciigif
-Comment=Play GIFs as ASCII art in a GTK window
-Exec=/home/kavish/.local/bin/asciigif
-Icon=utilities-terminal
+Name=$APP_NAME
+GenericName=ASCII GIF Player
+Comment=Play GIFs and videos as colored ASCII art in a GTK window
+Exec=python3 $HOME/.local/bin/asciigifer
+Icon=$APP_ID
 Terminal=false
-Categories=Graphics;Utility;
-DESK
-update-desktop-database "$HOME/.local/share/applications/" 2>/dev/null || true
+Categories=AudioVideo;Graphics;Utility;
+Keywords=ascii;gif;art;animation;
+DESKTOP
 
-echo ""
-echo "✅ Installed!"
-echo "Run: asciigif"
-echo "Or find 'asciigif' in your app menu."
-echo ""
-echo "If 'asciigif' isn't found, add to PATH:"
-echo '  export PATH="$HOME/.local/bin:$PATH"'
+# 4. refresh caches
+update-desktop-database "$DESKTOP_DIR" 2>/dev/null || true
+gtk-update-icon-cache -f -t "$HOME/.local/share/icons/hicolor" 2>/dev/null || true
+xfce4-panel -r 2>/dev/null || true
+
+echo "✅ $APP_NAME installed"
+echo "   Run: asciigifer"
+echo "   Or search '$APP_NAME' in your app menu."
+echo "   Uninstall with: ./uninstall.sh"

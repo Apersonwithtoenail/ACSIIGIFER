@@ -1,6 +1,16 @@
-#!/bin/bash
-rm -rf "$HOME/.local/share/asciigif"
-rm -f  "$HOME/.local/bin/asciigif"
-rm -f  "$HOME/.local/share/applications/asciigif.desktop"
-rm -f  "$HOME/.config/asciigif.conf"
-echo "✅ asciigif uninstalled"
+#!/usr/bin/env bash
+# uninstall.sh — remove ACSIIGIFER
+set -e
+
+APP_NAME="ACSIIGIFER"
+APP_ID="asciigifer"
+
+rm -f "$HOME/.local/bin/asciigifer"
+rm -f "$HOME/.local/share/applications/$APP_ID.desktop"
+rm -f "$HOME/.local/share/icons/hicolor/scalable/apps/$APP_ID.svg"
+
+update-desktop-database "$HOME/.local/share/applications" 2>/dev/null || true
+gtk-update-icon-cache -f -t "$HOME/.local/share/icons/hicolor" 2>/dev/null || true
+xfce4-panel -r 2>/dev/null || true
+
+echo "✅ $APP_NAME removed"
